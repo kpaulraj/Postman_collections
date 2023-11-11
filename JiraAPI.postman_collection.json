@@ -1,0 +1,502 @@
+{
+	"info": {
+		"_postman_id": "52047657-7617-47b7-93b7-5155d35623d3",
+		"name": "JiraAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30404251",
+		"_collection_link": "https://galactic-eclipse-916562.postman.co/workspace/Team_api_Test~8e0ab620-5970-47a9-864a-f2dafe6f5e91/collection/30404251-52047657-7617-47b7-93b7-5155d35623d3?action=share&source=collection_link&creator=30404251"
+	},
+	"item": [
+		{
+			"name": "Create_Jira_Issue_ETE_DD",
+			"item": [
+				{
+					"name": "Get_Allprojects",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"\r",
+									"var jsonData = pm.response.json();\r",
+									"console.log(jsonData);\r",
+									"console.log(jsonData.values);\r",
+									"var result=(jsonData.values).find((value)=> value.name===\"LearnJira\")\r",
+									"if (result!='undefined') {\r",
+									"    pm.collectionVariables.set(\"project_Id\", result.id);\r",
+									"    pm.collectionVariables.set(\"project_Key\", result.key);\r",
+									"}\r",
+									"else\r",
+									"{console.log(\"No result\")}\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Verify maxresults field is 50\", function () {\r",
+									"      pm.expect(jsonData.maxResults).to.eql(50);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{usename}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{jiraToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{hostname}}/rest/api/3/project/search",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"3",
+								"project",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_IssueType_for_Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"console.log(jsonData);\r",
+									"var testdata=pm.variables.get(\"issue_Name\");\r",
+									"console.log(testdata);\r",
+									"var result=jsonData.find((value)=> value.name===testdata);\r",
+									"if (result!='undefined') {\r",
+									"    pm.collectionVariables.set(\"issueType_Id\", result.id);\r",
+									"    console.log(result.id);\r",
+									"}\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{usename}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{jiraToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{hostname}}/rest/api/3/issuetype/project?projectId={{project_Id}}",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"3",
+								"issuetype",
+								"project"
+							],
+							"query": [
+								{
+									"key": "projectId",
+									"value": "{{project_Id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_Users_Assignable_To_Project",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"console.log(jsonData);\r",
+									"var result=(jsonData).find((value)=> value.displayName===\"bonita\");\r",
+									"var reporter=(jsonData).find((value)=> value.emailAddress===\"kalpana.paulrajt@gmail.com\");\r",
+									"if (result!='undefined') {\r",
+									"    pm.collectionVariables.set(\"acc_Id\", result.accountId);\r",
+									"    console.log(result.accountId,\":\",result.displayName);\r",
+									"}\r",
+									"if (reporter!='undefined') {\r",
+									"    pm.collectionVariables.set(\"reporter_Id\", reporter.accountId);\r",
+									"    console.log(reporter.accountId,\":\",reporter.displayName);\r",
+									"}\r",
+									"else{\r",
+									"    pm.collectionVariables.set(\"reporter_Id\", result.accountId);\r",
+									"    console.log(\"Else Called\");}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{usename}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{jiraToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{hostname}}/rest/api/3/user/assignable/multiProjectSearch?projectKeys={{project_Key}}",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"3",
+								"user",
+								"assignable",
+								"multiProjectSearch"
+							],
+							"query": [
+								{
+									"key": "projectKeys",
+									"value": "{{project_Key}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create_Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var response= pm.response.json();\r",
+									"pm.collectionVariables.set(\"issueId\", response.id);\r",
+									"console.log(response);\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var title=pm.collectionVariables.replaceIn(\"{{$randomPhrase}}\");\r",
+									"pm.collectionVariables.set(\"issue_Title\",title);\r",
+									"console.log(pm.collectionVariables.get(\"issue_Title\"));\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{usename}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{jiraToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fields\": {\r\n        \"assignee\": {\r\n            \"id\": \"{{acc_Id}}\"\r\n        },\r\n        \"description\": {\r\n            \"content\": [\r\n                {\r\n                    \"content\": [\r\n                        {\r\n                            \"text\": \"API Testing through Postman -2.\",\r\n                            \"type\": \"text\"\r\n                        }\r\n                    ],\r\n                    \"type\": \"paragraph\"\r\n                }\r\n            ],\r\n            \"type\": \"doc\",\r\n            \"version\": 1\r\n        },\r\n        \"issuetype\": {\r\n            \"id\": \"{{issueType_Id}}\"\r\n        },\r\n        \"project\": {\r\n            \"id\": \"{{project_Id}}\"\r\n        },\r\n        \"reporter\": {\r\n            \"id\": \"{{reporter_Id}}\"\r\n        },\r\n        \"summary\": \"{{issue_Title}}\"\r\n        \r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://{{hostname}}/rest/api/3/issue",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"3",
+								"issue"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_Created_Issue",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Verify Summary field with Collection Variable\", function () {\r",
+									"    var sum=pm.collectionVariables.get(\"issue_Title\");\r",
+									"    var response=pm.response.json();\r",
+									"    console.log(sum);\r",
+									"    pm.expect(response.fields.summary).to.eql(sum);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{usename}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{jiraToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{hostname}}/rest/api/3/issue/{{issueId}}",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"3",
+								"issue",
+								"{{issueId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get_Created_Issue Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Verify Summary field with Collection Variable\", function () {\r",
+									"    var sum=pm.collectionVariables.get(\"issue_Title\");\r",
+									"    var response=pm.response.json();\r",
+									"    console.log(sum);\r",
+									"    pm.expect(response.fields.summary).to.eql(sum);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "{{usename}}",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "{{jiraToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://{{hostname}}/rest/api/3/issue/{{issueId}}",
+							"protocol": "https",
+							"host": [
+								"{{hostname}}"
+							],
+							"path": [
+								"rest",
+								"api",
+								"3",
+								"issue",
+								"{{issueId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Sprint1_feature_Test",
+			"item": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "hostname",
+			"value": "kalpana81.atlassian.net",
+			"type": "string"
+		},
+		{
+			"key": "Username",
+			"value": "kalpana.paulrajt@gmail.com",
+			"type": "string"
+		},
+		{
+			"key": "jiraToken",
+			"value": "ATATT3xFfGF0UWiGblZuDg3j8qA-DE80jAbdyIcuej-DLbryBZ2R6S-xUspI35rbBmRXtVa1-dIL7H0nOfgAm0jIoQm6PqWUoblxjij7g_I2FeudOIEFj-n0kelI0rPTLMy5rustoxOT3UCpGr5CQVVYE5F7RpmN7_bOy06eYTxbJagKSso3qgI=85326266",
+			"type": "string"
+		},
+		{
+			"key": "project_Id",
+			"value": ""
+		},
+		{
+			"key": "project_Key",
+			"value": ""
+		},
+		{
+			"key": "issueType_Id",
+			"value": ""
+		},
+		{
+			"key": "acc_Id",
+			"value": ""
+		},
+		{
+			"key": "reporter_Id",
+			"value": ""
+		},
+		{
+			"key": "issue_Title",
+			"value": ""
+		},
+		{
+			"key": "issueId",
+			"value": ""
+		},
+		{
+			"key": "issue_Name",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
