@@ -94,7 +94,9 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
-									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
 									""
 								],
 								"type": "text/javascript"
@@ -164,7 +166,9 @@
 									"else{\r",
 									"    pm.collectionVariables.set(\"reporter_Id\", result.accountId);\r",
 									"    console.log(\"Else Called\");}\r",
-									""
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
 								],
 								"type": "text/javascript"
 							}
