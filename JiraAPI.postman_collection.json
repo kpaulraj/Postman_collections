@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "52047657-7617-47b7-93b7-5155d35623d3",
+		"_postman_id": "bb260086-793f-4e97-a0e7-d12b87422d6f",
 		"name": "JiraAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "30404251",
-		"_collection_link": "https://galactic-eclipse-916562.postman.co/workspace/Team_api_Test~8e0ab620-5970-47a9-864a-f2dafe6f5e91/collection/30404251-52047657-7617-47b7-93b7-5155d35623d3?action=share&source=collection_link&creator=30404251"
+		"_collection_link": "https://galactic-eclipse-916562.postman.co/workspace/Team_api_Test~8e0ab620-5970-47a9-864a-f2dafe6f5e91/collection/30404251-bb260086-793f-4e97-a0e7-d12b87422d6f?action=share&source=collection_link&creator=30404251"
 	},
 	"item": [
 		{
@@ -219,7 +219,10 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var response= pm.response.json();\r",
+									"var response = pm.response.json();\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
 									"pm.collectionVariables.set(\"issueId\", response.id);\r",
 									"console.log(response);\r",
 									"pm.test(\"Status code is 200\", function () {\r",
