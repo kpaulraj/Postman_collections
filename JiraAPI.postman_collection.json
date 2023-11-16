@@ -1,10 +1,10 @@
 {
 	"info": {
-		"_postman_id": "bb260086-793f-4e97-a0e7-d12b87422d6f",
+		"_postman_id": "2f40ba88-6922-4833-8e2e-cc771ac6ffdf",
 		"name": "JiraAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "30404251",
-		"_collection_link": "https://galactic-eclipse-916562.postman.co/workspace/Team_api_Test~8e0ab620-5970-47a9-864a-f2dafe6f5e91/collection/30404251-bb260086-793f-4e97-a0e7-d12b87422d6f?action=share&source=collection_link&creator=30404251"
+		"_collection_link": "https://galactic-eclipse-916562.postman.co/workspace/Team_api_Test~8e0ab620-5970-47a9-864a-f2dafe6f5e91/collection/30404251-2f40ba88-6922-4833-8e2e-cc771ac6ffdf?action=share&source=collection_link&creator=30404251"
 	},
 	"item": [
 		{
@@ -94,9 +94,7 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
+									"\r",
 									""
 								],
 								"type": "text/javascript"
@@ -166,9 +164,7 @@
 									"else{\r",
 									"    pm.collectionVariables.set(\"reporter_Id\", result.accountId);\r",
 									"    console.log(\"Else Called\");}\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});"
+									""
 								],
 								"type": "text/javascript"
 							}
@@ -223,10 +219,7 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"var response = pm.response.json();\r",
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
+									"var response= pm.response.json();\r",
 									"pm.collectionVariables.set(\"issueId\", response.id);\r",
 									"console.log(response);\r",
 									"pm.test(\"Status code is 200\", function () {\r",
@@ -350,63 +343,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "Get_Created_Issue Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"pm.test(\"Verify Summary field with Collection Variable\", function () {\r",
-									"    var sum=pm.collectionVariables.get(\"issue_Title\");\r",
-									"    var response=pm.response.json();\r",
-									"    console.log(sum);\r",
-									"    pm.expect(response.fields.summary).to.eql(sum);\r",
-									"});\r",
-									""
-								],
-								"type": "text/javascript"
-							}
-						}
-					],
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": [
-								{
-									"key": "username",
-									"value": "{{usename}}",
-									"type": "string"
-								},
-								{
-									"key": "password",
-									"value": "{{jiraToken}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "https://{{hostname}}/rest/api/3/issue/{{issueId}}",
-							"protocol": "https",
-							"host": [
-								"{{hostname}}"
-							],
-							"path": [
-								"rest",
-								"api",
-								"3",
-								"issue",
-								"{{issueId}}"
-							]
-						}
-					},
-					"response": []
 				}
 			],
 			"event": [
@@ -430,10 +366,6 @@
 					}
 				}
 			]
-		},
-		{
-			"name": "Sprint1_feature_Test",
-			"item": []
 		}
 	],
 	"event": [
@@ -465,44 +397,6 @@
 		{
 			"key": "Username",
 			"value": "kalpana.paulrajt@gmail.com",
-			"type": "string"
-		},
-		{
-			"key": "jiraToken",
-			"value": "ATATT3xFfGF0UWiGblZuDg3j8qA-DE80jAbdyIcuej-DLbryBZ2R6S-xUspI35rbBmRXtVa1-dIL7H0nOfgAm0jIoQm6PqWUoblxjij7g_I2FeudOIEFj-n0kelI0rPTLMy5rustoxOT3UCpGr5CQVVYE5F7RpmN7_bOy06eYTxbJagKSso3qgI=85326266",
-			"type": "string"
-		},
-		{
-			"key": "project_Id",
-			"value": ""
-		},
-		{
-			"key": "project_Key",
-			"value": ""
-		},
-		{
-			"key": "issueType_Id",
-			"value": ""
-		},
-		{
-			"key": "acc_Id",
-			"value": ""
-		},
-		{
-			"key": "reporter_Id",
-			"value": ""
-		},
-		{
-			"key": "issue_Title",
-			"value": ""
-		},
-		{
-			"key": "issueId",
-			"value": ""
-		},
-		{
-			"key": "issue_Name",
-			"value": "",
 			"type": "string"
 		}
 	]
